@@ -4,7 +4,7 @@ import setupMiddleware from './middleware'
 const app = express()
 setupMiddleware(app)
 
-app.all((req, res) => {
+app.all('*', (req, res) => {
     res.json({
         ok: true
     })
