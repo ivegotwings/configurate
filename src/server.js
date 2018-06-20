@@ -1,5 +1,5 @@
 import express from 'express'
-import setGlobalMiddleware from './middleware'
+import setupMiddleware from './middleware'
 
 const app = express()
 setupMiddleware(app)

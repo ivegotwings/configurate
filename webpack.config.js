@@ -12,6 +12,7 @@ module.exports = {
         __filename: true,
         __dirname: true
     },
+    mode: 'development',
     externals: [nodeExternals({
         whitelist: ['webpack/hot/poll?1000']
     })],
@@ -22,12 +23,8 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         babelrc: false,
-                        presets: [
-                            ['env', {
-                                modules: false
-                            }], 'stage-0'
-                        ],
-                        plugins: ['transform-regenerator', 'transform-runtime']
+                        presets: ['env'],
+                        plugins: ['transform-runtime']
                     }
                 }],
                 exclude: /node_modules/
