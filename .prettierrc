@@ -7,5 +7,5 @@
   "bracketSpacing": true,
   "semi": true,
   "useTabs": false,
-  "filepath": "src/**/*.js"
+  "filepath": "src/**/*.js*"
 }
