@@ -1,8 +1,8 @@
 // @flow
-
 import React from 'react';
 
-const renderApp = () => {
-  render();
+const Greeting = function() {
+  return React.createElement('h1', null, 'Hello World!!');
 };
-renderApp();
+
+export default Greeting;
