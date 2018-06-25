@@ -23,8 +23,8 @@ module.exports = {
   },
   devServer: {
     hot: true,
-    publicPath: '/public/',
-    historyApiFallback: true
+    historyApiFallback: true,
+    index: 'index.html'
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
