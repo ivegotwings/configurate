@@ -1,30 +1,20 @@
-const webpack = require('webpack');
 const path = require('path');
-const StartServerPlugin = require('start-server-webpack-plugin');
+const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-module.exports = {
+const config = {
   context: __dirname,
-  entry: {
-    hmr: 'webpack/hot/poll?1000',
-    client: './js/ClientApp.jsx',
-    server: './src/index'
-  },
-  watch: true,
+  entry: ['./js/ClientApp.jsx'],
   devtool: process.env.NODE_ENV === 'development' ? 'cheap-eval-source-map' : false,
-  target: 'node',
-  node: {
-    __filename: true,
-    __dirname: true
-  },
   output: {
     path: path.resolve(__dirname, 'public'),
-    filename: '[name].js',
+    filename: 'bundle.js',
     publicPath: '/public/'
   },
   devServer: {
     hot: true,
-    historyApiFallback: true,
-    index: 'index.html'
+    publicPath: '/public/',
+    historyApiFallback: true
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
@@ -38,7 +28,15 @@ module.exports = {
     reasons: true,
     chunks: false
   },
-  mode: 'development',
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new CopyWebpackPlugin([
+      {
+        from: 'static'
+      }
+    ])
+  ],
   module: {
     rules: [
       {
@@ -48,32 +46,16 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.js?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              babelrc: false,
-              presets: ['env'],
-              plugins: ['transform-runtime']
-            }
-          }
-        ],
-        include: [path.resolve('js'), path.resolve('node_modules/preact-compat/src')],
-        exclude: /node_modules/
-      },
-      {
-        test: /\.(graphql|gql)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'raw-loader'
-        }
+        test: /\.jsx?$/,
+        loader: 'babel-loader',
+        include: [path.resolve('js'), path.resolve('node_modules/preact-compat/src')]
       }
     ]
-  },
-  plugins: [
-    new StartServerPlugin('server.js'),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin()
-  ]
+  }
 };
+
+if (process.env.NODE_ENV === 'development') {
+  config.entry.unshift('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000');
+}
+
+module.exports = config;
